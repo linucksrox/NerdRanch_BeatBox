@@ -1,4 +1,4 @@
-package com.dalydays.android.criminalintent;
+package com.dalydays.android.beatbox;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
