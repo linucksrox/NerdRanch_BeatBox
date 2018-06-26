@@ -1,7 +1,10 @@
 package com.dalydays.android.beatbox;
 
 import org.junit.Before;
+import org.junit.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.mock;
 
 public class SoundViewModelTest {
@@ -15,5 +18,10 @@ public class SoundViewModelTest {
         mSound = new Sound("assetPath");
         mSubject = new SoundViewModel(mBeatbox);
         mSubject.setSound(mSound);
+    }
+
+    @Test
+    public void exposesSoundNameAsTitle() {
+        assertThat(mSubject.getTitle(), is(mSound.getName()));
     }
 }
