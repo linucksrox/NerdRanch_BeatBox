@@ -3,15 +3,19 @@ package com.dalydays.android.beatbox;
 import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
 import android.media.AudioManager;
 import android.media.SoundPool;
+import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
+import android.widget.SeekBar;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BeatBox {
+public class BeatBox extends BaseObservable {
     private static final String TAG = "BeatBox";
     private static final String SOUNDS_FOLDER = "sample_sounds";
     private static final int MAX_SOUNDS = 5;
@@ -19,6 +23,8 @@ public class BeatBox {
     private AssetManager mAssets;
     private List<Sound> mSounds = new ArrayList<>();
     private SoundPool mSoundPool;
+    private float mPlaybackRate;
+    private int mPlaybackDisplay;
 
     public BeatBox(Context context) {
         mAssets = context.getAssets();
@@ -28,12 +34,12 @@ public class BeatBox {
         loadSounds();
     }
 
-    public void play(Sound sound, float playbackRate) {
+    public void play(Sound sound) {
         Integer soundId = sound.getSoundId();
         if (soundId == null) {
             return;
         }
-        mSoundPool.play(soundId, 1.0f, 1.0f, 1, 0, playbackRate);
+        mSoundPool.play(soundId, 1.0f, 1.0f, 1, 0, mPlaybackRate);
     }
 
     public void release() {
@@ -71,5 +77,29 @@ public class BeatBox {
 
     public List<Sound> getSounds() {
         return mSounds;
+    }
+
+    public float getPlaybackRate() {
+        return mPlaybackRate;
+    }
+
+    public void setPlaybackRate(float playbackRate) {
+        mPlaybackRate = playbackRate;
+        notifyChange();
+    }
+
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        mPlaybackRate = (float) progress / 100;
+        notifyChange();
+    }
+
+    @Bindable
+    public String getPlaybackDisplay() {
+        return "Playback Speed: " + mPlaybackDisplay + "%";
+    }
+
+    public void setPlaybackDisplay() {
+        mPlaybackDisplay = Math.round(mPlaybackRate);
+        notifyChange();
     }
 }
