@@ -29,13 +29,14 @@
                 android:paddingBottom="4dp"
                 android:paddingLeft="8dp"
                 android:paddingRight="8dp"
-                android:text="@{beatbox.playbackDisplay}" />
+                android:text="@{beatbox.getPlaybackDisplay}" />
 
             <android.support.v7.widget.AppCompatSeekBar
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:paddingBottom="8dp"
+                android:max="150"
                 android:onProgressChanged="@{beatbox.onProgressChanged}"/>
         </LinearLayout>
     </LinearLayout>

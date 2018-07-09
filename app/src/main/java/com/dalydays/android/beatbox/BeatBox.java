@@ -24,13 +24,13 @@ public class BeatBox extends BaseObservable {
     private List<Sound> mSounds = new ArrayList<>();
     private SoundPool mSoundPool;
     private float mPlaybackRate;
-    private int mPlaybackDisplay;
 
     public BeatBox(Context context) {
         mAssets = context.getAssets();
         // This old constructor is deprecated but needed for compatibility (Use SoundPool.Builder
         // on Lollipop API 21 or higher
         mSoundPool = new SoundPool(MAX_SOUNDS, AudioManager.STREAM_MUSIC, 0);
+        mPlaybackRate = 1;
         loadSounds();
     }
 
@@ -79,27 +79,13 @@ public class BeatBox extends BaseObservable {
         return mSounds;
     }
 
-    public float getPlaybackRate() {
-        return mPlaybackRate;
-    }
-
-    public void setPlaybackRate(float playbackRate) {
-        mPlaybackRate = playbackRate;
-        notifyChange();
+    @Bindable
+    public String getPlaybackDisplay() {
+        return Integer.toString(Math.round(mPlaybackRate * 100));
     }
 
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        mPlaybackRate = (float) progress / 100;
-        notifyChange();
-    }
-
-    @Bindable
-    public String getPlaybackDisplay() {
-        return "Playback Speed: " + mPlaybackDisplay + "%";
-    }
-
-    public void setPlaybackDisplay() {
-        mPlaybackDisplay = Math.round(mPlaybackRate);
-        notifyChange();
+        Log.d(TAG, "Changing progress to " + progress);
+        mPlaybackRate = (float) (progress / 100);
     }
 }
