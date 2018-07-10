@@ -7,7 +7,6 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.support.v7.widget.AppCompatSeekBar;
 import android.util.Log;
 import android.widget.SeekBar;
 
@@ -81,11 +80,12 @@ public class BeatBox extends BaseObservable {
 
     @Bindable
     public String getPlaybackDisplay() {
-        return Integer.toString(Math.round(mPlaybackRate * 100));
+        return "Playback Rate " + Integer.toString(Math.round(mPlaybackRate * 100)) + "%";
     }
 
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-        Log.d(TAG, "Changing progress to " + progress);
-        mPlaybackRate = (float) (progress / 100);
+        int realProgress = progress + 50;
+        mPlaybackRate = realProgress / 100f;
+        notifyChange();
     }
 }
